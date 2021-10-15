@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>aspwil</groupId>
     <artifactId>fractamateLegacy</artifactId>
-    <version>1.6.1-LEGACY</version>
+    <version>1.6.2-LEGACY</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
