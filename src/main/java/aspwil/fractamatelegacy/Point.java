@@ -38,8 +38,8 @@ public class Point{
    //convert to string
    public String toString(){
       return new String("P:("+
-              ((double)((int)(x *1000.0)))/1000.0+","+
-              ((double)((int)(y *1000.0)))/1000.0+","+
+              ((double)((int)(x *10000000.0)))/10000000.0+","+
+              ((double)((int)(y *10000000.0)))/10000000.0+","+
               rot+")");
    }
    //makes a copy but shifts the point

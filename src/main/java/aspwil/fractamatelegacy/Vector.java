@@ -119,10 +119,10 @@ public class Vector{
    @Override
    public String toString(){
       return new String("V:("+
-              ((double)((int)(x *1000.0)))/1000.0+","+
-              ((double)((int)(y *1000.0)))/1000.0+","+
-              ((double)((int)(length *1000.0)))/1000.0+","+
-              ((double)((int)(angle *1000.0)))/1000.0+")");
+              ((double)((int)(x *10000000.0)))/10000000.0+","+
+              ((double)((int)(y *10000000.0)))/10000000.0+","+
+              ((double)((int)(length *10000000.0)))/10000000.0+","+
+              ((double)((int)(angle *10000000.0)))/10000000.0+")");
    }
    //draw
    public void draw(){

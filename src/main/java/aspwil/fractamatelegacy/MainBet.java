@@ -1,8 +1,12 @@
 package aspwil.fractamatelegacy;
 
 /**
- * TODO: - add tutorial
+ * TODO:
  *
+ * add tutorial 
+ * add input verification 
+ * fix the floating point issues with the display of movement on the right side
+ * fix non standard vector for saves
  *
  */
 import java.awt.Toolkit;
@@ -151,26 +155,40 @@ class MainBet {
                 } else if (importDesign.isPressed()) {
                     //wait for button release becouse JOptionPane.showInputDialog pauses program
                     unpress();
-                    //get the code to build the rule
-                    String input = JOptionPane.showInputDialog(null, "Paste Save Code");
-                    //strings allowed to be in import code
-                    String[] toKeep = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", "true", "false", "-"};
-                    //remove all non allowed string from the input code to set up array
-                    input = cleanUpString(toKeep, input);
-                    //converty to an array
-                    String[] in = input.split(",");
-                    //take in each peice of array and set up options
-                    iter = Integer.parseInt(in[0]) - 1;
-                    drawType = Integer.parseInt(in[1]);
-                    doShowType = Boolean.parseBoolean(in[2]);
-                    showType = Integer.parseInt(in[3]);
-                    rot = Double.parseDouble(in[4]);
-                    seed = new Vector(Double.parseDouble(in[5]), Double.parseDouble(in[6]), Double.parseDouble(in[7]), Double.parseDouble(in[8]));
-                    //clear origin rules
-                    originRules = new ArrayList<Point>();
-                    //set up origin rules with the rest of the code
-                    for (int i = 0; i < (in.length - 9) / 3; i++) {
-                        originRules.add(new Point(Double.parseDouble(in[9 + 3 * i]) + 0.5, Double.parseDouble(in[10 + 3 * i]) + 0.5, Double.parseDouble(in[11 + 3 * i])));
+                    //get the code to build the rule   
+                    while (true) {
+                        String input = JOptionPane.showInputDialog(null, "Paste Save Code");
+                        String rawInput = input;
+                        //strings allowed to be in import code
+                        String[] toKeep = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", "true", "false", "-"};
+                        //remove all non allowed string from the input code to set up array
+                        try{
+                            input = cleanUpString(toKeep, input);
+                        } catch(Exception e) {
+                            break;
+                        }
+                        //converty to an array
+                        String[] in = input.split(",");
+                        //if we error tell the user and have them reinput stuff.
+                        try {
+                            //take in each peice of array and set up options
+                            iter = Integer.parseInt(in[0]) - 1;
+                            drawType = Integer.parseInt(in[1]);
+                            doShowType = Boolean.parseBoolean(in[2]);
+                            showType = Integer.parseInt(in[3]);
+                            rot = Double.parseDouble(in[4]);
+                            seed = new Vector(Double.parseDouble(in[5]), Double.parseDouble(in[6]), Double.parseDouble(in[7]), Double.parseDouble(in[8]));
+                            //clear origin rules
+                            originRules = new ArrayList<Point>();
+                            //set up origin rules with the rest of the code
+                            for (int i = 0; i < (in.length - 9) / 3; i++) {
+                                originRules.add(new Point(Double.parseDouble(in[9 + 3 * i]) + 0.5, Double.parseDouble(in[10 + 3 * i]) + 0.5, Double.parseDouble(in[11 + 3 * i])));
+                            }
+                            break;
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "you messed up the string somehow please double check and retry");
+                            showTextPane(rawInput);
+                        }
                     }
                 } else if (exportDesign.isPressed()) {
                     //wait becouse JOptionPane.showMessageDialog will pause program
@@ -185,11 +203,8 @@ class MainBet {
                     export = export.substring(0, export.length() - 2);
                     //add on newline and end square bracket
                     export += "\n}";
-                    //set up a JTextPane so the code is copyable
-                    JTextPane textPane = new JTextPane();
-                    textPane.setText(export);
-                    //output the code to the user
-                    JOptionPane.showMessageDialog(null, textPane);
+                    //show the user the text
+                    showTextPane(export);
                 } else if (StdDraw.isMousePressed()) {
                     // this code handles adding a new point and moveing + deleteing current points
                     //used to break out of multipul loops at once
@@ -281,7 +296,7 @@ class MainBet {
                 exactPoint.draw();
                 //show the screen
                 StdDraw.show();
-                //clear it to set up for the nest screen
+                //clear it to set up for the next screen
                 StdDraw.clear();
             } else if (screen == "draw") {
                 //rotate the points
@@ -300,7 +315,7 @@ class MainBet {
                 }
 
                 //this draws the text on the side of the output screen
-                StdDraw.textLeft(0.01, 0.975, "" + (iter + 1) + "," + drawType + "," + doShowType + "," + showType + "," + ((double) ((int) (rot * 1000.0))) / 1000.0 + ",");
+                StdDraw.textLeft(0.01, 0.975, "" + (iter + 1) + "," + drawType + "," + doShowType + "," + showType + "," +rot+ ",");
                 StdDraw.textLeft(0.01, 0.950, "" + seed + ",");
                 StdDraw.textLeft(0.01, 0.925, "Points:{\n");
                 for (int i = 0; i < originRules.size(); i++) {
@@ -328,8 +343,7 @@ class MainBet {
                         if (drawType == 0) {//
                             activeVector.draw();
 
-                        }
-                        //point draw type
+                        } //point draw type
                         else if (drawType == 1) {// 
                             //draw the point if dont doShowType (every time) or on the last layer and point is showType
                             if (i == iter + 1 && j == showType || !doShowType) {
@@ -447,5 +461,11 @@ class MainBet {
             out = Double.parseDouble(in);
         }
         return out;
+    }
+
+    private static void showTextPane(String text) {
+        JTextPane textPane = new JTextPane();
+        textPane.setText(text);
+        JOptionPane.showMessageDialog(null, textPane);
     }
 }
