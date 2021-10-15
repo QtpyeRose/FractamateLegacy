@@ -3,9 +3,6 @@ package aspwil.fractamatelegacy;
 /**
  * TODO:
  *
- * add tutorial 
- * add input verification 
- * fix the floating point issues with the display of movement on the right side
  * fix non standard vector for saves
  *
  */
@@ -89,7 +86,7 @@ class MainBet {
                     unpress();
                 }
                 start.draw();
-                StdDraw.text(0.5, 0.5, "Fractel generator V1.6.1");
+                StdDraw.text(0.5, 0.5, "Fractel generator V1.6.2");
                 StdDraw.text(0.5, 0.45, "by aspen");
                 StdDraw.show();
                 StdDraw.clear();
@@ -272,12 +269,12 @@ class MainBet {
                 StdDraw.text(0.9, 0.025, "Iteration: " + (iter + 1));
                 StdDraw.text(0.9, 0.05, "Show Type: " + (doShowType ? "One Point" : "All Points"));
                 StdDraw.text(0.9, 0.075, "Show Only Number: " + showType);
-                StdDraw.text(0.9, 0.1, "Movement :" + rot);
+                StdDraw.text(0.9, 0.1, "Movement :" + ((double)((int)(rot *10000.0)))/10000.0);
                 StdDraw.text(0.9, 0.125, "draw type: " + (drawType == 0 ? "Line" : "Point"));
                 //draw the lines of the rule
                 for (Point p : originRules) {
                     StdDraw.line(seed.getEndPoint().x, seed.getEndPoint().y, p.x, p.y);
-                    StdDraw.text(p.x, p.y, "" + p.rot);
+                    StdDraw.text(p.x, p.y, "" + ((double)((int)(p.rot *10000.0)))/10000.0);
                 }
                 //draw all of the buttons
                 drawButton.draw();
