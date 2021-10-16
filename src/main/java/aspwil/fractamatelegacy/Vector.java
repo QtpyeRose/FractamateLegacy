@@ -1,5 +1,8 @@
 package aspwil.fractamatelegacy;
 
+//this class is a vector, the data is stored as a x,y value, a length, and a rotation
+//it aslo incude methods for turning 2 points into a vector, and getting the end point of a vector
+
 import java.lang.Math;
 public class Vector{
    private static double PI = Math.PI; 
@@ -116,6 +119,7 @@ public class Vector{
       return Math.abs(Value);
    }
    // toString
+   //print out the vectors data in the form V: (X, Y, LENGTH, ANGLE)
    @Override
    public String toString(){
       return new String("V:("+
@@ -124,16 +128,14 @@ public class Vector{
               ((double)((int)(length *10000000.0)))/10000000.0+","+
               ((double)((int)(angle *10000000.0)))/10000000.0+")");
    }
-   //draw
+   //draw, relies on standard draw and draws a line
    public void draw(){
-      angle = angle%(PI*2);
-      if (angle < 0d){
-         angle = angle+2*PI*(Math.floor(angle/(PI*-2))+1);
-      }
+      //fix the angle if it broken
+      angle = rectifyAngle(angle);
       Point end = getEndPoint();
       StdDraw.line(x,y,end.x,end.y);
    }
-   //makes angle within range
+   //makes angle within correct range of possible angles
    public static double rectifyAngle(double in){
       in = in%(PI*2);
       if (in < 0d){
